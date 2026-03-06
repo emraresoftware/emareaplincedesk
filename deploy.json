@@ -1,0 +1,31 @@
+{
+  "_comment": "EmareCloud Deploy Manifesti — Bu dosya EmareCloud paneli tarafından okunur. Manuel değiştirme.",
+  "slug": "emareaplincedesk",
+  "name": "Emare Aplince Desk",
+  "github_repo": "emraresoftware/emareaplincedesk",
+  "branch": "main",
+  "dc": "local",
+  "server_host": "",
+  "server_ssh_port": 22,
+  "remote_path": "/var/www/emareaplincedesk",
+  "stack": "php-laravel",
+  "port": 8330,
+  "webroot": "/var/www/emareaplincedesk/public",
+  "domain": "",
+  "pre_deploy": [],
+  "deploy_commands": [
+    "cd /var/www/emareaplincedesk",
+    "git pull origin main",
+    "composer install --no-dev --optimize-autoloader --no-interaction",
+    "php artisan migrate --force",
+    "php artisan config:cache",
+    "php artisan route:cache",
+    "php artisan view:cache",
+    "chown -R nginx:nginx /var/www/emareaplincedesk/storage /var/www/emareaplincedesk/bootstrap/cache"
+  ],
+  "restart_command": "systemctl reload nginx",
+  "health_check_url": "http://localhost:8330",
+  "webhooks_enabled": true,
+  "auto_deploy_on_push": true,
+  "notify_on_fail": true
+}
